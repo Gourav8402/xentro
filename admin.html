@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#071a33">
+  <title>Xentro Admin | Store management</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Return to Xentro store"><img src="assets/logo.png" alt="Xentro"><span>XENTRO <small>ADMIN</small></span></a>
+    <a class="store-link" href="index.html">View storefront</a>
+  </header>
+
+  <main class="shell">
+    <section class="login-card" id="loginView" aria-labelledby="loginTitle">
+      <p class="eyebrow">SECURE ACCESS</p>
+      <h1 id="loginTitle">Store management</h1>
+      <p>Sign in to manage products, inventory, homepage content, customer orders and fulfilment status.</p>
+      <form id="loginForm">
+        <label for="adminId">Administrator ID</label>
+        <input id="adminId" name="adminId" type="text" autocomplete="username" required>
+        <label for="password">Administrator password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button class="button" type="submit">Open dashboard</button>
+      </form>
+      <p class="message" id="loginMessage" aria-live="polite"></p>
+    </section>
+
+    <section id="dashboard" hidden aria-labelledby="dashboardTitle">
+      <div class="page-head">
+        <div><p class="eyebrow">XENTRO ENTERPRISES</p><h1 id="dashboardTitle">Store management</h1><p class="subtle" id="recordCount">Loading store data…</p></div>
+        <div class="head-actions"><button class="secondary" id="exportOrders" type="button">Export orders CSV</button><button class="secondary" id="refreshOrders" type="button">Refresh</button><button class="logout" id="logout" type="button">Log out</button></div>
+      </div>
+
+      <nav class="admin-tabs" aria-label="Admin sections">
+        <button class="admin-tab active" type="button" data-view="overview">Overview</button>
+        <button class="admin-tab" type="button" data-view="products">Products & inventory</button>
+        <button class="admin-tab" type="button" data-view="content">Homepage & categories</button>
+        <button class="admin-tab" type="button" data-view="blog">Blog & SEO</button>
+        <button class="admin-tab" type="button" data-view="orders">Orders</button>
+        <button class="admin-tab" type="button" data-view="reviews">Reviews</button>
+      </nav>
+
+      <section class="admin-view" id="view-overview">
+      <div class="stats" aria-label="Store statistics">
+        <article><span>Products</span><strong id="totalProducts">0</strong></article>
+        <article><span>Out of stock</span><strong id="outOfStock">0</strong></article>
+        <article><span>Total orders</span><strong id="totalOrders">0</strong></article>
+        <article><span>Sales from fulfilled/paid orders</span><strong id="totalRevenue">₹0</strong></article>
+        <article><span>Units in tracked stock</span><strong id="stockUnits">0</strong></article>
+        <article><span>Awaiting fulfilment</span><strong id="pendingOrders">0</strong></article>
+      </div>
+      <section class="orders-panel" aria-labelledby="overviewProductsTitle">
+        <div class="panel-head"><div><h2 id="overviewProductsTitle">Inventory snapshot</h2><p id="inventorySummary">Loading inventory…</p></div></div>
+        <div id="lowStockList" class="low-stock-list"></div>
+      </section>
+      </section>
+
+      <section class="admin-view" id="view-products" hidden>
+        <section class="orders-panel">
+          <div class="panel-head"><div><h2 id="productFormTitle">Add a product</h2><p>Changes appear on the storefront as soon as they are saved.</p></div></div>
+          <form id="productForm" class="manage-form">
+            <input type="hidden" name="id">
+            <label>Product name<input name="name" maxlength="140" required></label>
+            <label>Category<select name="category" id="productCategory" required></select></label>
+            <label>Price (INR)<input name="price" type="number" min="0" step="1" required></label>
+            <label>Compare-at price (optional)<input name="old" type="number" min="0" step="1"></label>
+            <label>Stock quantity<input name="stock" type="number" min="0" step="1" placeholder="Not tracked yet"></label>
+            <label>Product label<input name="tag" maxlength="40" value="NEW" required></label>
+            <label class="manage-wide">Offer text<input name="offerText" maxlength="80" placeholder="e.g. Back to school offer"></label>
+            <label class="manage-wide">Description<textarea name="description" maxlength="10000" rows="4" required></textarea></label>
+            <input type="hidden" name="img" id="productImagePath">
+            <fieldset class="manage-wide image-manager">
+              <legend>Product images</legend>
+              <p class="image-help">Add up to 10 images (PNG, JPEG, or WebP; max 5 MB each). Drag-free controls let you reorder, replace, or remove images. The first image is the main storefront image.</p>
+              <label class="image-upload">Add images<input id="productImagesFile" type="file" accept="image/png,image/jpeg,image/webp" multiple></label>
+              <div id="productImageList" class="product-image-list" aria-live="polite"></div>
+            </fieldset>
+            <label class="manage-wide">Features (one per line)<textarea name="features" rows="4"></textarea></label>
+            <label class="manage-wide">Specifications (one key: value per line)<textarea name="specs" rows="4"></textarea></label>
+            <fieldset class="manage-wide seo-fieldset">
+              <legend>Product page SEO & sharing</legend>
+              <div class="manage-form seo-fields">
+                <label>SEO title<input name="seoTitle" maxlength="70" placeholder="Defaults to product name and store name"></label>
+                <label>Meta description<textarea name="metaDescription" maxlength="320" rows="2" placeholder="Defaults to product description"></textarea></label>
+                <label>Focus keyword<input name="focusKeyword" maxlength="120"></label>
+                <label>Canonical URL<input name="canonicalUrl" type="url" maxlength="500" placeholder="Leave blank to use the product URL"></label>
+                <label>Image alt text<input name="imageAlt" maxlength="250" placeholder="Defaults to product name"></label>
+                <label>Social image path<input name="socialImage" placeholder="Defaults to main product image"></label>
+              </div>
+            </fieldset>
+            <label class="check-label"><input name="featured" type="checkbox"> Feature on homepage</label>
+            <label class="check-label"><input name="active" type="checkbox" checked> Product is available for sale (unchecked products appear as Coming soon)</label>
+            <div class="manage-wide form-actions"><button class="button" type="submit">Save product</button><button class="secondary" id="cancelProductEdit" type="button" hidden>Cancel edit</button></div>
+            <p class="message manage-wide" id="productMessage" aria-live="polite"></p>
+          </form>
+        </section>
+        <section class="orders-panel">
+          <div class="panel-head"><div><h2>Products & inventory</h2><p>Set stock to zero to automatically mark a product out of stock.</p></div></div>
+          <div class="table-wrap" tabindex="0" aria-label="Scrollable product inventory table"><table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Visibility</th><th>Actions</th></tr></thead><tbody id="productsBody"></tbody></table></div>
+        </section>
+      </section>
+
+      <section class="admin-view" id="view-content" hidden>
+        <section class="orders-panel">
+          <div class="panel-head"><div><h2>Homepage content</h2><p>Edit the hero text and image without changing the storefront design.</p></div></div>
+          <form id="contentForm" class="manage-form">
+            <label>Season label<input name="season" maxlength="100" required></label>
+            <label>Hero title<input name="title" maxlength="160" required></label>
+            <label class="manage-wide">Description<textarea name="description" maxlength="600" rows="3" required></textarea></label>
+            <label class="manage-wide">Hero image URL<input name="image" id="heroImagePath" required></label>
+            <label class="manage-wide">Upload hero image<input id="heroImageFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
+            <fieldset class="manage-wide"><legend>Featured homepage products</legend><div id="featuredProducts" class="featured-products"></div></fieldset>
+            <label class="manage-wide">Categories (one per line)<textarea name="categories" rows="4" required></textarea></label>
+            <div class="manage-wide form-actions"><button class="button" type="submit">Save homepage & categories</button></div>
+            <p class="message manage-wide" id="contentMessage" aria-live="polite"></p>
+          </form>
+        </section>
+      </section>
+
+      <section class="admin-view" id="view-blog" hidden>
+        <section class="orders-panel">
+          <div class="panel-head"><div><h2 id="blogFormTitle">Create a blog post</h2><p>Write and preview your article, tune its search and sharing details, then save it as a draft, schedule it, or publish it. Published changes appear on the site and in the sitemap automatically.</p></div></div>
+          <form id="blogForm" class="manage-form">
+            <input type="hidden" name="originalSlug">
+            <label>Post title<input name="title" maxlength="180" required></label>
+            <label>URL slug<input name="slug" maxlength="100" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="school-backpack-care-tips" required><span class="field-hint">Lowercase letters, numbers, and hyphens.</span></label>
+            <label>Category<input name="category" maxlength="80" placeholder="Guides" required></label>
+            <label>Card description<input name="description" maxlength="320" required></label>
+            <label>Publication date<input name="publishedAt" type="date" required></label>
+            <label>Publication status<select name="status"><option value="draft">Draft (unpublished)</option><option value="published">Published</option><option value="scheduled">Schedule for later</option></select></label>
+            <label class="scheduled-field" hidden>Publish date & time<input name="scheduledAt" type="datetime-local"></label>
+            <label class="manage-wide">Article image path<input name="image" placeholder="assets/image.png or uploads/image.jpg" required></label>
+            <label class="manage-wide">Upload article image<input id="blogImageFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
+            <label class="manage-wide">Image alt text<input name="imageAlt" maxlength="250" required></label>
+            <label class="manage-wide">Article content<textarea name="content" maxlength="50000" rows="16" placeholder="Start with an introduction. Use ## for section headings, ### for subheadings, and - for list items. Separate paragraphs with a blank line." required></textarea><span class="field-hint">Plain text with ## headings, ### subheadings, and - bullet lists. The post title is the page's only H1.</span></label>
+            <fieldset class="manage-wide seo-fieldset">
+              <legend>Search & social preview</legend>
+              <div class="manage-form seo-fields">
+                <label>SEO title<input name="seoTitle" maxlength="70" placeholder="Defaults to the post title + store name"></label>
+                <label>Meta description<textarea name="metaDescription" maxlength="320" rows="2" placeholder="Defaults to the card description"></textarea></label>
+                <label>Focus keyword<input name="focusKeyword" maxlength="120" placeholder="school backpack care"></label>
+                <label>Canonical URL<input name="canonicalUrl" type="url" maxlength="500" placeholder="Leave blank to use the post URL"></label>
+                <label class="manage-wide">Social sharing image path<input name="socialImage" placeholder="Uses the article image when blank"></label>
+                <label class="manage-wide">Upload social sharing image<input id="blogSocialImageFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
+              </div>
+              <div class="seo-preview" aria-live="polite"><span id="blogPreviewUrl">https://example.com/blog/your-post</span><strong id="blogPreviewTitle">Your post title | Xentro Enterprises</strong><p id="blogPreviewDescription">Your search result description will appear here.</p></div>
+              <p class="field-hint">Google may rewrite search snippets and does not guarantee rankings or indexing.</p>
+            </fieldset>
+            <label>Related product (optional)<select name="relatedProductId"><option value="">No product link</option></select></label>
+            <div class="manage-wide form-actions"><button class="button" type="submit">Save post</button><button class="secondary" id="cancelBlogEdit" type="button" hidden>Cancel edit</button></div>
+            <p class="message manage-wide" id="blogMessage" aria-live="polite"></p>
+          </form>
+        </section>
+        <section class="orders-panel">
+          <div class="panel-head"><div><h2>Website SEO & Google Search Console</h2><p>Manage search snippets and canonical URLs for the home page, blog index, and reviews page. Post-specific metadata is edited above.</p></div></div>
+          <form id="siteSeoForm" class="manage-form">
+            <label>Home page SEO title<input name="homeTitle" maxlength="70"></label>
+            <label>Home page meta description<textarea name="homeDescription" maxlength="320" rows="2"></textarea></label>
+            <label class="manage-wide">Home page canonical URL<input name="homeCanonical" type="url" maxlength="500" placeholder="Leave blank to use this site's home page"></label>
+            <label class="manage-wide">Home page social image path<input name="homeSocialImage" placeholder="Defaults to the homepage hero image"></label>
+            <label class="manage-wide">Upload home page social image<input id="homeSocialImageFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
+            <label>Blog index SEO title<input name="blogTitle" maxlength="70"></label>
+            <label>Blog index meta description<textarea name="blogDescription" maxlength="320" rows="2"></textarea></label>
+            <label class="manage-wide">Blog index canonical URL<input name="blogCanonical" type="url" maxlength="500" placeholder="Leave blank to use /blog/"></label>
+            <label class="manage-wide">Blog index social image path<input name="blogSocialImage" placeholder="Defaults to the homepage hero image"></label>
+            <label class="manage-wide">Upload blog index social image<input id="blogIndexSocialImageFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
+            <label>Reviews page SEO title<input name="reviewsTitle" maxlength="70"></label>
+            <label>Reviews page meta description<textarea name="reviewsDescription" maxlength="320" rows="2"></textarea></label>
+            <label class="manage-wide">Reviews page canonical URL<input name="reviewsCanonical" type="url" maxlength="500" placeholder="Leave blank to use /reviews/"></label>
+            <label class="manage-wide">Reviews page social image path<input name="reviewsSocialImage" placeholder="Optional social preview image"></label>
+            <label class="manage-wide">Upload reviews page social image<input id="reviewsSocialImageFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
+            <label class="manage-wide">Blog index heading<input name="blogHeading" maxlength="160"></label>
+            <label class="manage-wide">Blog index introduction<textarea name="blogIntro" maxlength="320" rows="2"></textarea></label>
+            <label class="manage-wide">Google Search Console verification code<input name="googleSiteVerification" maxlength="200" placeholder="Paste the content value from Google's HTML tag verification"></label>
+            <div class="manage-wide search-console-help"><p>After saving your verification code, verify the site in <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Google Search Console</a>, then submit this sitemap: <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer">/sitemap.xml</a>. Google reports indexing and coverage status in Search Console; sitemap submission does not guarantee indexing.</p></div>
+            <div class="manage-wide form-actions"><button class="button" type="submit">Save website SEO</button></div>
+            <p class="message manage-wide" id="siteSeoMessage" aria-live="polite"></p>
+          </form>
+        </section>
+        <section class="orders-panel">
+          <div class="panel-head"><div><h2>Blog posts</h2><p>Drafts remain private. Scheduled posts publish automatically at their scheduled time.</p></div><span id="blogPostCount" class="subtle"></span></div>
+          <div class="table-wrap" tabindex="0" aria-label="Scrollable blog post list"><table><thead><tr><th>Post</th><th>Category</th><th>Status</th><th>URL / publish time</th><th>Actions</th></tr></thead><tbody id="blogPostsBody"></tbody></table></div>
+          <p class="empty" id="blogPostsEmpty" hidden>No blog posts yet. Create one above.</p>
+        </section>
+      </section>
+
+      <section class="admin-view" id="view-orders" hidden>
+      <section class="orders-panel" aria-labelledby="historyTitle">
+        <div class="panel-head"><div><h2 id="historyTitle">Full order history</h2><p>Search by order ID, customer name or phone number. Change status to update customer tracking.</p></div></div>
+        <div class="filters"><label>Search<input id="search" type="search" placeholder="Order ID, customer or phone"></label><label>Status<select id="statusFilter"><option value="">All statuses</option><option>Payment pending</option><option>Order confirmed</option><option>Paid — processing</option><option>Order placed</option><option>Ready to ship</option><option>Shipped</option><option>Out for delivery</option><option>Delivered</option><option>Cancelled</option></select></label></div>
+        <div class="table-wrap" tabindex="0" aria-label="Scrollable order history table"><table><thead><tr><th>Order</th><th>Customer & delivery</th><th>Items</th><th>Payment</th><th>Total</th><th>Status</th><th>Tracking ID</th><th>Details</th></tr></thead><tbody id="ordersBody"></tbody></table></div>
+        <p class="empty" id="emptyState" hidden>No orders match the current filter.</p>
+      </section>
+      </section>
+      <section class="admin-view" id="view-reviews" hidden>
+        <section class="orders-panel" aria-labelledby="reviewModerationTitle">
+          <div class="panel-head"><div><h2 id="reviewModerationTitle">Customer reviews</h2><p>Approve reviews to publish them on the product page and reviews directory. Upcoming products can receive feedback too.</p></div></div>
+          <p class="subtle" id="reviewModerationSummary"></p>
+          <div id="adminReviewList" class="admin-review-list"></div>
+          <p class="empty" id="adminReviewsEmpty" hidden>No customer reviews have been submitted.</p>
+        </section>
+      </section>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="admin.js"></script>
+</body>
+</html>

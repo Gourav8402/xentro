@@ -1,0 +1,32 @@
+.blog-main{min-height:60vh}
+.blog-hero{padding:68px 8vw 42px;background:linear-gradient(120deg,#f5fbff,#fff 58%,#e9f5ff)}
+.blog-hero h1{max-width:780px;margin:12px 0;font-size:clamp(38px,6vw,64px);line-height:1.02;letter-spacing:-.05em;color:var(--navy)}
+.blog-hero p{max-width:680px;margin:0;color:var(--muted);font-size:18px}
+.blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding:44px 8vw 72px}
+.blog-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#fff}
+.blog-card img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:#f5f7f9}
+.blog-card-content{padding:19px}
+.blog-category{display:inline-block;margin:0 8px 6px 0;padding:4px 9px;border-radius:999px;background:#eaf5ff;color:#17638f;font-size:12px;font-weight:bold}
+.blog-date,.article-meta{color:var(--muted);font-size:13px}
+.blog-card h2{margin:8px 0;font-size:23px;line-height:1.2;letter-spacing:-.025em}
+.blog-card h2 a,.blog-article a{color:var(--navy);text-decoration:none}
+.blog-card h2 a:hover,.blog-article a:hover{text-decoration:underline}
+.blog-card p{margin:0 0 15px;color:#465260}
+.blog-read{color:#0874bf;font-weight:bold;text-decoration:none}
+.blog-article{max-width:860px;margin:0 auto;padding:32px 28px 72px}
+.blog-breadcrumb{margin:0 0 28px;color:var(--muted);font-size:14px}
+.blog-breadcrumb a{color:#0874bf}
+.blog-article h1{margin:10px 0 14px;color:var(--navy);font-size:clamp(34px,5vw,54px);line-height:1.08;letter-spacing:-.045em}
+.blog-article .article-lead{margin:0 0 20px;color:#465260;font-size:19px;line-height:1.65}
+.blog-cover{display:block;width:100%;max-height:480px;margin:24px 0 32px;border-radius:14px;object-fit:cover;background:#f5f7f9}
+.blog-copy{color:#303c49;font-size:17px;line-height:1.8}
+.blog-copy h2{margin:34px 0 10px;font-size:27px}
+.blog-copy h3{margin:26px 0 9px;font-size:21px}
+.blog-copy p{margin:0 0 18px}
+.blog-copy ul{margin:0 0 24px;padding-left:24px}
+.blog-copy li{padding-left:5px;margin:0 0 9px}
+.blog-cta{margin-top:36px;padding:24px;border-radius:12px;background:var(--sky)}
+.blog-cta p{margin:6px 0 15px;color:#465260}
+.blog-empty{padding:40px 8vw}
+@media(max-width:900px){.blog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.blog-hero{padding:48px 6vw 34px}.blog-grid{grid-template-columns:1fr;padding:30px 6vw 54px}.blog-article{padding:24px 6vw 54px}.blog-article .article-lead{font-size:17px}.blog-copy{font-size:16px}.blog-copy h2{font-size:23px}}

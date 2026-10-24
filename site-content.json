@@ -1,0 +1,19 @@
+{
+  "categories": [
+    "Backpacks",
+    "Pencil Pouch",
+    "Office Bag"
+  ],
+  "home": {
+    "season": "NEW SCHOOL SEASON ? 2026",
+    "title": "Carry smart. Stand out.",
+    "description": "Trending school bags designed for busy days, big dreams and better living.",
+    "image": "assets/hero-bag.png",
+    "featuredProductIds": [
+      1,
+      2,
+      3,
+      4
+    ]
+  }
+}
